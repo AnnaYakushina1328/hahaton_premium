@@ -1,0 +1,52 @@
+warning: in the working copy of 'backend/app/main.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/requirements.txt', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/backend/app/main.py b/backend/app/main.py[m
+[1mindex 5e78f69..13bd76d 100644[m
+[1m--- a/backend/app/main.py[m
+[1m+++ b/backend/app/main.py[m
+[36m@@ -1,26 +1,22 @@[m
+ ﻿from fastapi import FastAPI[m
+ from fastapi.middleware.cors import CORSMiddleware[m
+ [m
+[32m+[m[32mfrom app.api.router import api_router[m
+[32m+[m[32mfrom app.config import settings[m
+[32m+[m
+[32m+[m
+ app = FastAPI([m
+[31m-    title="Арена переговоров API",[m
+[31m-    version="0.1.0",[m
+[32m+[m[32m    title=settings.app_name,[m
+[32m+[m[32m    version=settings.app_version,[m
+[32m+[m[32m    debug=settings.debug,[m
+ )[m
+ [m
+ app.add_middleware([m
+     CORSMiddleware,[m
+[31m-    allow_origins=[[m
+[31m-        "http://localhost:5173",[m
+[31m-        "http://127.0.0.1:5173",[m
+[31m-    ],[m
+[32m+[m[32m    allow_origins=settings.cors_origin_list,[m
+     allow_credentials=True,[m
+     allow_methods=["*"],[m
+     allow_headers=["*"],[m
+ )[m
+ [m
+[31m-[m
+[31m-@app.get("/api/health")[m
+[31m-def health():[m
+[31m-    return {[m
+[31m-        "ok": True,[m
+[31m-        "service": "arena-negotiations",[m
+[31m-    }[m
+[32m+[m[32mapp.include_router(api_router)[m
+[1mdiff --git a/backend/requirements.txt b/backend/requirements.txt[m
+[1mindex 364e2ee..e6f11d2 100644[m
+[1m--- a/backend/requirements.txt[m
+[1m+++ b/backend/requirements.txt[m
+[36m@@ -1,2 +1,4 @@[m
+[31m-fastapi[m
+[32m+[m[32m﻿fastapi[m
+ uvicorn[standard][m
+[32m+[m[32mpydantic-settings[m
+[32m+[m[32msqlalchemy[m
